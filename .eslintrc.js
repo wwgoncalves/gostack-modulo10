@@ -40,7 +40,7 @@ module.exports = {
     'react/jsx-props-no-spreading': [
       'error',
       {
-        exceptions: ['Route', 'Component'],
+        exceptions: ['TInput', 'Container'],
       },
     ],
   },
