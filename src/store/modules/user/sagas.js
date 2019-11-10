@@ -5,14 +5,14 @@ import { updateProfileSuccess, updateProfileFailure } from './actions';
 import api from '~/services/api';
 
 export function* updateProfile({ payload }) {
-  const { name, email, avatar_id, ...rest } = payload.data;
+  const { name, email, ...rest } = payload.data;
 
-  const profile = { name, email, avatar_id, ...(rest.oldPassword ? rest : {}) };
+  const profile = { name, email, ...(rest.oldPassword ? rest : {}) };
 
   try {
     const response = yield call(api.put, 'users', profile);
 
-    Alert.alert('Update success', 'Profile successfully updated.');
+    Alert.alert('Success!', 'Profile successfully updated.');
 
     yield put(updateProfileSuccess(response.data));
   } catch (error) {
