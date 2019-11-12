@@ -54,20 +54,32 @@ export default function Profile({ navigation }) {
 
   // Workaround to the white block bug when tabbar is hidden by React Navigation v4
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', () => {
-      Animated.timing(animatedOpacity, {
-        toValue: 0.0,
-        duration: 300,
-      }).start();
-      Animated.timing(animatedHeight, { toValue: 0, duration: 500 }).start();
-    });
-    Keyboard.addListener('keyboardDidHide', () => {
-      Animated.timing(animatedOpacity, {
-        toValue: 1.0,
-        duration: 700,
-      }).start();
-      Animated.timing(animatedHeight, { toValue: 49, duration: 300 }).start();
-    });
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        Animated.timing(animatedOpacity, {
+          toValue: 0.0,
+          duration: 200,
+        }).start();
+        Animated.timing(animatedHeight, { toValue: 0, duration: 500 }).start();
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        Animated.timing(animatedOpacity, {
+          toValue: 1.0,
+          duration: 800,
+        }).start();
+        Animated.timing(animatedHeight, { toValue: 49, duration: 300 }).start();
+      }
+    );
+
+    return function cleanup() {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
   }, []); // eslint-disable-line
 
   useEffect(() => {
