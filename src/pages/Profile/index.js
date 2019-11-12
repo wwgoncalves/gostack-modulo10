@@ -60,8 +60,6 @@ export default function Profile({ navigation }) {
         duration: 300,
       }).start();
       Animated.timing(animatedHeight, { toValue: 0, duration: 500 }).start();
-
-      // navigation.setParams({ tabBarVisible: false });
     });
     Keyboard.addListener('keyboardDidHide', () => {
       Animated.timing(animatedOpacity, {
@@ -69,8 +67,6 @@ export default function Profile({ navigation }) {
         duration: 700,
       }).start();
       Animated.timing(animatedHeight, { toValue: 49, duration: 300 }).start();
-
-      // navigation.setParams({ tabBarVisible: true });
     });
   }, []); // eslint-disable-line
 
@@ -155,12 +151,7 @@ export default function Profile({ navigation }) {
   );
 }
 
-Profile.navigationOptions = ({ navigation }) => ({
-  // tabBarVisible:
-  //   navigation.state.params &&
-  //   navigation.state.params.tabBarVisible !== undefined
-  //     ? navigation.state.params.tabBarVisible
-  //     : true,
+Profile.navigationOptions = {
   tabBarLabel: 'My profile',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="person" size={20} color={tintColor} />
@@ -176,4 +167,4 @@ Profile.navigationOptions = ({ navigation }) => ({
       flexGrow: 1,
     },
   },
-});
+};
