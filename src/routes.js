@@ -27,6 +27,7 @@ export default (signedIn = false) =>
               inactiveTintColor: 'rgba(255, 255, 255, 0.6)',
               style: {
                 backgroundColor: '#8d41a8',
+                flexGrow: 1,
                 // borderTopWidth: 0,
               },
             },

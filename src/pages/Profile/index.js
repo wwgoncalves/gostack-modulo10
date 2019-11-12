@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Keyboard } from 'react-native';
+import { Keyboard, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { updateProfileRequest } from '~/store/modules/user/actions';
@@ -17,6 +17,9 @@ import {
   SubmitButton,
   LogoutButton,
 } from './styles';
+
+const animatedOpacity = new Animated.Value(1.0);
+const animatedHeight = new Animated.Value(49);
 
 export default function Profile({ navigation }) {
   const dispatch = useDispatch();
@@ -52,11 +55,23 @@ export default function Profile({ navigation }) {
   // Workaround to the white block bug when tabbar is hidden by React Navigation v4
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', () => {
-      navigation.setParams({ tabBarVisible: false });
+      Animated.timing(animatedOpacity, {
+        toValue: 0.0,
+        duration: 300,
+      }).start();
+      Animated.timing(animatedHeight, { toValue: 0, duration: 500 }).start();
+
+      // navigation.setParams({ tabBarVisible: false });
     });
-    Keyboard.addListener('keyboardDidHide', () =>
-      navigation.setParams({ tabBarVisible: true })
-    );
+    Keyboard.addListener('keyboardDidHide', () => {
+      Animated.timing(animatedOpacity, {
+        toValue: 1.0,
+        duration: 700,
+      }).start();
+      Animated.timing(animatedHeight, { toValue: 49, duration: 300 }).start();
+
+      // navigation.setParams({ tabBarVisible: true });
+    });
   }, []); // eslint-disable-line
 
   useEffect(() => {
@@ -141,13 +156,24 @@ export default function Profile({ navigation }) {
 }
 
 Profile.navigationOptions = ({ navigation }) => ({
-  tabBarVisible:
-    navigation.state.params &&
-    navigation.state.params.tabBarVisible !== undefined
-      ? navigation.state.params.tabBarVisible
-      : true,
+  // tabBarVisible:
+  //   navigation.state.params &&
+  //   navigation.state.params.tabBarVisible !== undefined
+  //     ? navigation.state.params.tabBarVisible
+  //     : true,
   tabBarLabel: 'My profile',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="person" size={20} color={tintColor} />
   ),
+  tabBarOptions: {
+    keyboardHidesTabBar: false,
+    activeTintColor: '#fff',
+    inactiveTintColor: 'rgba(255, 255, 255, 0.6)',
+    style: {
+      backgroundColor: '#8d41a8',
+      opacity: animatedOpacity,
+      height: animatedHeight,
+      flexGrow: 1,
+    },
+  },
 });
